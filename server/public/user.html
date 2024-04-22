@@ -1,13 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>user</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/user.css">
 </head>
 <body>
+    <section id="searchbar"><i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text">
+    </section>
+    <article id="filters">
+        <article class="filter">
+            Kraj
+            <select name="AddSelect" id="addSelect">
+                <option value="blank"></option>
+                <option value="knihu">Praha</option>
+                <option value="knihovnu">Středočeský</option>
+                <option value="autora">Plzeňský</option>
+                <option value="zanr">Královéhradecký</option>
+                <option value="knihu">Praha</option>
+                <option value="knihovnu">Středočeský</option>
+                <option value="autora">Plzeňský</option>
+                <option value="zanr">Královéhradecký</option>
+                <option value="knihu">Praha</option>
+                <option value="knihovnu">Středočeský</option>
+                <option value="autora">Plzeňský</option>
+                <option value="zanr">Královéhradecký</option>
+                <option value="knihu">Praha</option>
+                <option value="knihovnu">Středočeský</option>
+                <option value="autora">Plzeňský</option>
+                <option value="zanr">Královéhradecký</option>
+            </select>
+        </article>
+        <article class="filter">
+            Knihovna
+            <select name="AddSelect" id="addSelect">
+                <option value="blank"></option>
+            </select>
+        </article>
+        <article class="filter">
+            Žánr
+            <select name="AddSelect" id="addSelect">
+                <option value="blank"></option>
+            </select>
+        </article>
+        <article class="filter">
+            Autor
+            <select name="AddSelect" id="addSelect">
+                <option value="blank"></option>
+            </select>
+        </article>
+    </article>
+    <article id="books"></article>
     <script src="script/user.js"></script>
 </body>
 </html>
