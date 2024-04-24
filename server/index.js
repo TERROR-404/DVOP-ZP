@@ -1,11 +1,13 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import bodyParser from "body-parser";
 import pg from "pg";
 
 const app = express();
 
 app.use(cors());
+app.use(helmet());
 app.use('/', express.static("public"));
 app.use(bodyParser.json());
 
@@ -20,3 +22,4 @@ const client = new Client({
 })
 
 client.connect();
+app.listen(8000);
