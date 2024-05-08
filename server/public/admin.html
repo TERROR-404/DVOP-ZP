@@ -4,19 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>admin</title>
+    <link rel="stylesheet" href="style/reset.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="style/admin.css">
 </head>
 <body>
     <header>
         <article id="addRemove">
-            <section id="add">Přidat
-            </section>
-            <section id="remove">Odebrat
-            </section>
+            <article class="addOrRemove">
+                <section class="addRemoveHeading">Přidat</section>
+                <section class="addRemoveItem">
+                    <button class="addRemoveButton" id="addBook">Knihu</button>
+                    <button class="addRemoveButton" id="addAuthor">Autora</button>
+                    <button class="addRemoveButton" id="addLibrary">Knihovnu</button>
+                    <button class="addRemoveButton" id="addGenre">Žánr</button>
+                </section>
+            </article>
+            <article class="addOrRemove">
+                <section class="addRemoveHeading">Odebrat</section>
+                <section class="addRemoveItem">
+                    <button class="addRemoveButton" id="removeBook">Knihu</button>
+                    <button class="addRemoveButton" id="removeAuthor">Autora</button>
+                    <button class="addRemoveButton" id="removeLibrary">Knihovnu</button>
+                    <button class="addRemoveButton" id="removeGenre">Žánr</button>
+                </section>
+            </article>
         </article>
         <article id="admin">ADMIN</article>
     </header>
