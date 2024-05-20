@@ -19,22 +19,151 @@ function addRemoveClick(clickedElement) {
 
 addBook.addEventListener("click", (event)=>{
     addRemoveClick(addBook);
-    main.innerHTML = ``;
+    main.innerHTML = `
+    <form>
+        <article id="left">
+            <article id="top">
+                <article id="topLeft">
+                    <article class="selects">
+                        <section class="select">
+                            <label for"Region" class="dropdownName">Kraj</label>
+                            <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
+                            <section class="dropdownTitle"></section>
+                            <ul class="dropdownContent">
+                                <li>Link 1</li>
+                                <li>Link 2</li>
+                                <li>Link 3</li>
+                                <li>Link 3</li>
+                            </ul>
+                        </section>
+                        <section class="select">
+                            <label for="Library" class="dropdownName">Knihovna</label>
+                            <input name="Library" type=button class="dropdownButton">
+                            <section class="dropdownTitle"></section>
+                            <i class="fa-solid fa-caret-down"></i>
+                            <ul class="dropdownContent">
+                                <li>Link 1</li>
+                                <li>Link 2</li>
+                                <li>Link 3</li>
+                                <li>Link 3</li>
+                            </ul>
+                        </section>
+                    </article>
+                    <article class="selects">
+                        <section id="isbnContainer" class="textboxContainer">
+                            <label for="Isbn">ISBN</label>
+                            <input id="littleTextbox" name="Isbn" type="text">
+                        </section>
+                        <section class="select">
+                            <label for="Language" class="dropdownName">Jazyk</label>
+                            <input name="Language" type=button class="dropdownButton">
+                            <section class="dropdownTitle"></section>
+                            <i class="fa-solid fa-caret-down"></i>
+                            <ul class="dropdownContent">
+                                <li>Link 1</li>
+                                <li>Link 2</li>
+                                <li>Link 3</li>
+                                <li>Link 3</li>
+                            </ul>
+                        </section>
+                    </article>
+                    <article class="selects">
+                        <section id="littleTextContainer" class="textboxContainer">
+                            <label for="Year">Rok vydání</label>
+                            <input id="littleTextbox" name="Year" type="text">
+                        </section>
+                        <section id="littleTextContainer" class="textboxContainer">
+                            <label for="IssueNumber">Číslo vydání</label>
+                            <input id="littleTextbox" name="IssueNumber" type="text">
+                        </section>
+                        <section id="littleTextContainer" class="textboxContainer">
+                            <label for="Pages">Počet stran</label>
+                            <input id="littleTextbox" name="Pages" type="text">
+                        </section>
+                    </article>
+                </article>
+                <article id="topRight">
+                    <section class="addingContainer">
+                        <section class="label">Žánry</section>
+                        <section class="adding">
+                            <section class="addingLine">
+                                <section class="genre">Horror</section>
+                                <button type=button class="addingButton">-</button>
+                            </section>
+                            <button type=button class="addingButton" id="addingGenre">+</button>
+                        </section>
+                    </section>
+                    <section class="addingContainer">
+                        <section class="label">Autoři</section>
+                        <section class="adding">
+                            <section class="addingLine">
+                                <section class="genre">J.K. Rowlingová</section>
+                                <button type=button class="addingButton">-</button>
+                            </section>
+                            <button type=button class="addingButton" id="addingGenre">+</button>
+                        </section>
+                    </section>
+                </article>
+            </article>
+            <article id="mid">
+                <section class="textboxContainer">
+                    <label for="Name">Název</label>
+                    <input id="name" name="Name" type="text">
+                </section>
+            </article>
+            <article id="down">
+                <section class="descriptionContainer">
+                    <label for="Description">Popis děje</label>
+                    <input id="description" name="Description" type="text">
+                </section>
+            </article>
+        </article>
+        <article id="right">
+            <input id="odeslat" type="submit">
+        </article>
+    </form>
+    `;
+    document.getElementsByTagName("form")[0].style.flexDirection = "row";
+    for (const iterator of document.getElementsByClassName("select")) {
+        iterator.style.width = 45+"%";   
+    }
+    let dropdowns = document.getElementsByClassName("dropdownButton");
+    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
+    let dropIcons = document.getElementsByClassName("fa-caret-down");
+    let dropTitles = document.getElementsByClassName("dropdownTitle");
+    for (const i in dropdowns) {
+        dropdowns[i].addEventListener("click", (event) =>{
+            if ( dropdownOptoins[i].style.display == "block") {
+                dropdownOptoins[i].style.display = "none"
+                dropdowns[i].style.border = "grey solid 2px"
+                dropIcons[i].style.color = "grey";
+                dropIcons[i].style.transform = "rotate(0deg)";
+            }
+            else{
+                dropdownOptoins[i].style.display = "block";
+                dropdowns[i].style.border = "#8C0000 solid 2px";
+                dropIcons[i].style.color = "#8C0000";
+                dropIcons[i].style.transform = "rotate(180deg)";
+
+                for (const li of dropdownOptoins[i].children) {
+                    li.addEventListener("click", (event) =>{
+                        dropTitles[i].innerText = li.innerText;
+                        dropdownOptoins[i].style.display = "none";
+                        dropIcons[i].style.transform = "rotate(0deg)";
+                    });
+                }
+            }
+        });
+    }
 });
 addAuthor.addEventListener("click", (event)=>{
     addRemoveClick(addAuthor);
-});
-addLibrary.addEventListener("click", (event)=>{
-    addRemoveClick(addLibrary);
-});
-addGenre.addEventListener("click", (event)=>{
-    addRemoveClick(addGenre);
     main.innerHTML = `
     <form>
         <article class="selects">
             <section class="select">
-                <label for"Library" class="dropdownName">Knihovna</label>
-                <input name="Library" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
+                <label for"Region" class="dropdownName">Kraj</label>
+                <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                 <section class="dropdownTitle"></section>
                 <ul class="dropdownContent">
                     <li>Link 1</li>
@@ -44,8 +173,8 @@ addGenre.addEventListener("click", (event)=>{
                 </ul>
             </section>
             <section class="select">
-                <label for="Region" class="dropdownName">Knihovna</label>
-                <input name="Region" type=button class="dropdownButton">
+                <label for="Library" class="dropdownName">Knihovna</label>
+                <input name="Library" type=button class="dropdownButton">
                 <section class="dropdownTitle"></section>
                 <i class="fa-solid fa-caret-down"></i>
                 <ul class="dropdownContent">
@@ -57,10 +186,10 @@ addGenre.addEventListener("click", (event)=>{
             </section>
         </article>
         <section class="textboxContainer">
-            <label for="Name">Název</label>
+            <label for="Name">Jméno</label>
             <input name="Name" type="text">
         </section>
-        <input type="submit">
+        <input id="odeslat" type="submit">
     </form>
     `;
     let dropdowns = document.getElementsByClassName("dropdownButton");
@@ -84,6 +213,130 @@ addGenre.addEventListener("click", (event)=>{
                 for (const li of dropdownOptoins[i].children) {
                     li.addEventListener("click", (event) =>{
                         dropTitles[i].innerText = li.innerText;
+                        dropdownOptoins[i].style.display = "none";
+                        dropIcons[i].style.transform = "rotate(0deg)";
+                    });
+                }
+            }
+        });
+    }
+});
+addLibrary.addEventListener("click", (event)=>{
+    addRemoveClick(addLibrary);
+    main.innerHTML = `
+    <form>
+        <article class="selects">
+            <section class="select">
+                <label for"Region" class="dropdownName">Kraj</label>
+                <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
+                <section class="dropdownTitle"></section>
+                <ul class="dropdownContent">
+                    <li>Link 1</li>
+                    <li>Link 2</li>
+                    <li>Link 3</li>
+                    <li>Link 3</li>
+                </ul>
+            </section>
+        </article>
+        <section class="textboxContainer">
+            <label for="Name">Název</label>
+            <input name="Name" type="text">
+        </section>
+        <section class="textboxContainer">
+            <label for="Address">Adresa</label>
+            <input name="Address" type="text">
+        </section>
+        <input id="odeslat" type="submit">
+    </form>
+    `;
+    let dropdowns = document.getElementsByClassName("dropdownButton");
+    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
+    let dropIcons = document.getElementsByClassName("fa-caret-down");
+    let dropTitles = document.getElementsByClassName("dropdownTitle");
+    for (const i in dropdowns) {
+        dropdowns[i].addEventListener("click", (event) =>{
+            if ( dropdownOptoins[i].style.display == "block") {
+                dropdownOptoins[i].style.display = "none"
+                dropdowns[i].style.border = "grey solid 2px"
+                dropIcons[i].style.color = "grey";
+                dropIcons[i].style.transform = "rotate(0deg)";
+            }
+            else{
+                dropdownOptoins[i].style.display = "block";
+                dropdowns[i].style.border = "#8C0000 solid 2px";
+                dropIcons[i].style.color = "#8C0000";
+                dropIcons[i].style.transform = "rotate(180deg)";
+
+                for (const li of dropdownOptoins[i].children) {
+                    li.addEventListener("click", (event) =>{
+                        dropTitles[i].innerText = li.innerText;
+                        dropdownOptoins[i].style.display = "none";
+                        dropIcons[i].style.transform = "rotate(0deg)";
+                    });
+                }
+            }
+        });
+    }
+});
+addGenre.addEventListener("click", (event)=>{
+    addRemoveClick(addGenre);
+    main.innerHTML = `
+    <form>
+        <article class="selects">
+            <section class="select">
+                <label for"Region" class="dropdownName">Kraj</label>
+                <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
+                <section class="dropdownTitle"></section>
+                <ul class="dropdownContent">
+                    <li>Link 1</li>
+                    <li>Link 2</li>
+                    <li>Link 3</li>
+                    <li>Link 3</li>
+                </ul>
+            </section>
+            <section class="select">
+                <label for="Library" class="dropdownName">Knihovna</label>
+                <input name="Library" type=button class="dropdownButton">
+                <section class="dropdownTitle"></section>
+                <i class="fa-solid fa-caret-down"></i>
+                <ul class="dropdownContent">
+                    <li>Link 1</li>
+                    <li>Link 2</li>
+                    <li>Link 3</li>
+                    <li>Link 3</li>
+                </ul>
+            </section>
+        </article>
+        <section class="textboxContainer">
+            <label for="Name">Název</label>
+            <input name="Name" type="text">
+        </section>
+        <input id="odeslat" type="submit">
+    </form>
+    `;
+    let dropdowns = document.getElementsByClassName("dropdownButton");
+    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
+    let dropIcons = document.getElementsByClassName("fa-caret-down");
+    let dropTitles = document.getElementsByClassName("dropdownTitle");
+    for (const i in dropdowns) {
+        dropdowns[i].addEventListener("click", (event) =>{
+            if ( dropdownOptoins[i].style.display == "block") {
+                dropdownOptoins[i].style.display = "none"
+                dropdowns[i].style.border = "grey solid 2px"
+                dropIcons[i].style.color = "grey";
+                dropIcons[i].style.transform = "rotate(0deg)";
+            }
+            else{
+                dropdownOptoins[i].style.display = "block";
+                dropdowns[i].style.border = "#8C0000 solid 2px";
+                dropIcons[i].style.color = "#8C0000";
+                dropIcons[i].style.transform = "rotate(180deg)";
+
+                for (const li of dropdownOptoins[i].children) {
+                    li.addEventListener("click", (event) =>{
+                        dropTitles[i].innerText = li.innerText;
+                        dropdownOptoins[i].style.display = "none";
+                        dropIcons[i].style.transform = "rotate(0deg)";
                     });
                 }
             }
