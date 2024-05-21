@@ -26,7 +26,7 @@ addBook.addEventListener("click", (event)=>{
                 <article id="topLeft">
                     <article class="selects">
                         <section class="select">
-                            <label for"Region" class="dropdownName">Kraj</label>
+                            <label for="Region" class="dropdownName">Kraj</label>
                             <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                             <section class="dropdownTitle"></section>
                             <ul class="dropdownContent">
@@ -162,7 +162,7 @@ addAuthor.addEventListener("click", (event)=>{
     <form>
         <article class="selects">
             <section class="select">
-                <label for"Region" class="dropdownName">Kraj</label>
+                <label for="Region" class="dropdownName">Kraj</label>
                 <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                 <section class="dropdownTitle"></section>
                 <ul class="dropdownContent">
@@ -227,7 +227,7 @@ addLibrary.addEventListener("click", (event)=>{
     <form>
         <article class="selects">
             <section class="select">
-                <label for"Region" class="dropdownName">Kraj</label>
+                <label for="Region" class="dropdownName">Kraj</label>
                 <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                 <section class="dropdownTitle"></section>
                 <ul class="dropdownContent">
@@ -284,7 +284,7 @@ addGenre.addEventListener("click", (event)=>{
     <form>
         <article class="selects">
             <section class="select">
-                <label for"Region" class="dropdownName">Kraj</label>
+                <label for="Region" class="dropdownName">Kraj</label>
                 <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                 <section class="dropdownTitle"></section>
                 <ul class="dropdownContent">

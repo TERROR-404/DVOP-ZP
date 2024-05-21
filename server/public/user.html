@@ -12,52 +12,163 @@
     <link rel="stylesheet" href="style/user.css">
 </head>
 <body>
-    <section id="searchbar"><i class="fa-solid fa-magnifying-glass"></i>
+    <section id="searchbar">
+        <button id="searchButton">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
         <input type="text">
     </section>
-    <article id="filters">
-        <article class="filter">
-            Kraj
-            <select name="AddSelect" id="addSelect">
-                <option value="blank"></option>
-                <option value="knihu">Praha</option>
-                <option value="knihovnu">Středočeský</option>
-                <option value="autora">Plzeňský</option>
-                <option value="zanr">Královéhradecký</option>
-                <option value="knihu">Praha</option>
-                <option value="knihovnu">Středočeský</option>
-                <option value="autora">Plzeňský</option>
-                <option value="zanr">Královéhradecký</option>
-                <option value="knihu">Praha</option>
-                <option value="knihovnu">Středočeský</option>
-                <option value="autora">Plzeňský</option>
-                <option value="zanr">Královéhradecký</option>
-                <option value="knihu">Praha</option>
-                <option value="knihovnu">Středočeský</option>
-                <option value="autora">Plzeňský</option>
-                <option value="zanr">Královéhradecký</option>
-            </select>
-        </article>
-        <article class="filter">
-            Knihovna
-            <select name="AddSelect" id="addSelect">
-                <option value="blank"></option>
-            </select>
-        </article>
-        <article class="filter">
-            Žánr
-            <select name="AddSelect" id="addSelect">
-                <option value="blank"></option>
-            </select>
-        </article>
-        <article class="filter">
-            Autor
-            <select name="AddSelect" id="addSelect">
-                <option value="blank"></option>
-            </select>
-        </article>
+    <article class="selects">
+        <section class="select">
+            <label for="Region" class="dropdownName">Kraj</label>
+            <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
+            <section class="dropdownTitle"></section>
+            <ul class="dropdownContent">
+                <li>Link 1</li>
+                <li>Link 2</li>
+                <li>Link 3</li>
+                <li>Link 3</li>
+            </ul>
+        </section>
+        <section class="select">
+            <label for="Library" class="dropdownName">Knihovna</label>
+            <input name="Library" type=button class="dropdownButton">
+            <section class="dropdownTitle"></section>
+            <i class="fa-solid fa-caret-down"></i>
+            <ul class="dropdownContent">
+                <li>Link 1</li>
+                <li>Link 2</li>
+                <li>Link 3</li>
+                <li>Link 3</li>
+            </ul>
+        </section>
+        <section class="select">
+            <label for="Genre" class="dropdownName">Žánr</label>
+            <input name="Genre" type=button class="dropdownButton">
+            <section class="dropdownTitle"></section>
+            <i class="fa-solid fa-caret-down"></i>
+            <ul class="dropdownContent">
+                <li>Link 1</li>
+                <li>Link 2</li>
+                <li>Link 3</li>
+                <li>Link 3</li>
+            </ul>
+        </section>
+        <section class="select">
+            <label for="Author" class="dropdownName">Autor</label>
+            <input name="Author" type=button class="dropdownButton">
+            <section class="dropdownTitle"></section>
+            <i class="fa-solid fa-caret-down"></i>
+            <ul class="dropdownContent">
+                <li>Link 1</li>
+                <li>Link 2</li>
+                <li>Link 3</li>
+                <li>Link 3</li>
+            </ul>
+        </section>
     </article>
-    <article id="books"></article>
+    <article id="books">
+        <section class="book">
+            <section class="bookTitle">Stopařův průvodce galaxií</section>
+            <section class="bookMain">
+                <section class="bookLeft">
+                    <section class="bookInformation">
+                        <section class="label">Autoři</section>
+                        <section>J.R.R. Tolkien, J.K. Rowlingová</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Jazyk</section>
+                        <section>Čeština</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">ISBN</section>
+                        <section>1234-1234-1234-1234</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Kraj</section>
+                        <section>Praha</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Knihovna</section>
+                        <section>Městská knihovna v Praze - Smíchov</section>
+                        <section class="bookAddress">nám. 14. října 83/15, 150 00 Praha 5-Smíchov</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Žánry</section>
+                        <section>Horror, Fantasy, Sci-fi</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Rok vydání</section>
+                        <section>1923</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Číslo vydání</section>
+                        <section>2</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Počet stran</section>
+                        <section>345</section>
+                    </section>
+                </section>
+                <section class="bookRight">
+                    <section class="label">Děj</section>
+                    <section class="description">
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam id dolor. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Etiam sapien elit, consequat eget, tristique non, venenatis quis, ante. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Fusce wisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Suspendisse nisl. Nunc tincidunt ante vitae massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam ligula pede, sagittis quis, interdum ultricies, scelerisque eu. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Aenean placerat. Pellentesque arcu. Integer malesuada. Phasellus faucibus molestie nisl. Donec quis nibh at felis congue commodo.
+                    </section>
+                </section>
+            </section>
+        </section>
+        <section class="book">
+            <section class="bookTitle">Stopařův průvodce galaxií</section>
+            <section class="bookMain">
+                <section class="bookLeft">
+                    <section class="bookInformation">
+                        <section class="label">Autoři</section>
+                        <section>J.R.R. Tolkien, J.K. Rowlingová</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Jazyk</section>
+                        <section>Čeština</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">ISBN</section>
+                        <section>1234-1234-1234-1234</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Kraj</section>
+                        <section>Praha</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Knihovna</section>
+                        <section>Městská knihovna v Praze - Smíchov</section>
+                        <section class="bookAddress">nám. 14. října 83/15, 150 00 Praha 5-Smíchov</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Žánry</section>
+                        <section>Horror, Fantasy, Sci-fi</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Rok vydání</section>
+                        <section>1923</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Číslo vydání</section>
+                        <section>2</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Počet stran</section>
+                        <section>345</section>
+                    </section>
+                </section>
+                <section class="bookRight">
+                    <section class="label">Děj</section>
+                    <section class="description">
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam id dolor. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Etiam sapien elit, consequat eget, tristique non, venenatis quis, ante. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Fusce wisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Suspendisse nisl. Nunc tincidunt ante vitae massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam ligula pede, sagittis quis, interdum ultricies, scelerisque eu. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Aenean placerat. Pellentesque arcu. Integer malesuada. Phasellus faucibus molestie nisl. Donec quis nibh at felis congue commodo.
+                    </section>
+                </section>
+            </section>
+        </section>
+    </article>
     <script src="script/user.js"></script>
 </body>
 </html>

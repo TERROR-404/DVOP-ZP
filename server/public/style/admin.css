@@ -172,6 +172,7 @@ label , .label{
     border: grey solid 2px;
     border-radius: 10px;
     background-color: white;
+    cursor: pointer;
 }
 .dropdownButton:hover{
     border: #8C0000 solid 2px;
@@ -197,6 +198,7 @@ label , .label{
     padding-left: 10px;
     align-items: center;
     height: 50px;
+    cursor: pointer;
 }
 .dropdownContent > li:hover{
     background-color: darkgray;
