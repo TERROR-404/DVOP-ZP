@@ -29,11 +29,7 @@ addBook.addEventListener("click", (event)=>{
                             <label for="Region" class="dropdownName">Kraj</label>
                             <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                             <section class="dropdownTitle"></section>
-                            <ul class="dropdownContent">
-                                <li>Link 1</li>
-                                <li>Link 2</li>
-                                <li>Link 3</li>
-                                <li>Link 3</li>
+                            <ul id="regionContent" class="dropdownContent">
                             </ul>
                         </section>
                         <section class="select">
@@ -123,6 +119,22 @@ addBook.addEventListener("click", (event)=>{
         </article>
     </form>
     `;
+
+    fetch("http://localhost:8080/region", {
+        mode: "cors",
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        let regionDropdown = document.getElementById("regionContent");
+        for (let index = 0; index < data.rows.length; index++) {
+            console.log(data.rows[index].name);
+            regionDropdown.innerHTML += `
+            <li>${data.rows[index].name}</li>
+            `
+        }
+    })
+
     document.getElementsByTagName("form")[0].style.flexDirection = "row";
     for (const iterator of document.getElementsByClassName("select")) {
         iterator.style.width = 45+"%";   
@@ -131,7 +143,7 @@ addBook.addEventListener("click", (event)=>{
     let dropdownOptoins = document.getElementsByClassName("dropdownContent");
     let dropIcons = document.getElementsByClassName("fa-caret-down");
     let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (const i in dropdowns) {
+    for (let i = 0; i < dropdowns.length; i++) {
         dropdowns[i].addEventListener("click", (event) =>{
             if ( dropdownOptoins[i].style.display == "block") {
                 dropdownOptoins[i].style.display = "none"
@@ -165,11 +177,7 @@ addAuthor.addEventListener("click", (event)=>{
                 <label for="Region" class="dropdownName">Kraj</label>
                 <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                 <section class="dropdownTitle"></section>
-                <ul class="dropdownContent">
-                    <li>Link 1</li>
-                    <li>Link 2</li>
-                    <li>Link 3</li>
-                    <li>Link 3</li>
+                <ul id="regionContent" class="dropdownContent">
                 </ul>
             </section>
             <section class="select">
@@ -192,11 +200,27 @@ addAuthor.addEventListener("click", (event)=>{
         <input id="odeslat" type="submit">
     </form>
     `;
+
+    fetch("http://localhost:8080/region", {
+        mode: "cors",
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        let regionDropdown = document.getElementById("regionContent");
+        for (let index = 0; index < data.rows.length; index++) {
+            console.log(data.rows[index].name);
+            regionDropdown.innerHTML += `
+            <li>${data.rows[index].name}</li>
+            `
+        }
+    })
+
     let dropdowns = document.getElementsByClassName("dropdownButton");
     let dropdownOptoins = document.getElementsByClassName("dropdownContent");
     let dropIcons = document.getElementsByClassName("fa-caret-down");
     let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (const i in dropdowns) {
+    for (let i = 0; i < dropdowns.length; i++) {
         dropdowns[i].addEventListener("click", (event) =>{
             if ( dropdownOptoins[i].style.display == "block") {
                 dropdownOptoins[i].style.display = "none"
@@ -230,11 +254,7 @@ addLibrary.addEventListener("click", (event)=>{
                 <label for="Region" class="dropdownName">Kraj</label>
                 <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                 <section class="dropdownTitle"></section>
-                <ul class="dropdownContent">
-                    <li>Link 1</li>
-                    <li>Link 2</li>
-                    <li>Link 3</li>
-                    <li>Link 3</li>
+                <ul id="regionContent" class="dropdownContent">
                 </ul>
             </section>
         </article>
@@ -249,11 +269,27 @@ addLibrary.addEventListener("click", (event)=>{
         <input id="odeslat" type="submit">
     </form>
     `;
+
+    fetch("http://localhost:8080/region", {
+        mode: "cors",
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        let regionDropdown = document.getElementById("regionContent");
+        for (let index = 0; index < data.rows.length; index++) {
+            console.log(data.rows[index].name);
+            regionDropdown.innerHTML += `
+            <li>${data.rows[index].name}</li>
+            `
+        }
+    })
+
     let dropdowns = document.getElementsByClassName("dropdownButton");
     let dropdownOptoins = document.getElementsByClassName("dropdownContent");
     let dropIcons = document.getElementsByClassName("fa-caret-down");
     let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (const i in dropdowns) {
+    for (let i = 0; i < dropdowns.length; i++) {
         dropdowns[i].addEventListener("click", (event) =>{
             if ( dropdownOptoins[i].style.display == "block") {
                 dropdownOptoins[i].style.display = "none"
@@ -287,11 +323,7 @@ addGenre.addEventListener("click", (event)=>{
                 <label for="Region" class="dropdownName">Kraj</label>
                 <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
                 <section class="dropdownTitle"></section>
-                <ul class="dropdownContent">
-                    <li>Link 1</li>
-                    <li>Link 2</li>
-                    <li>Link 3</li>
-                    <li>Link 3</li>
+                <ul id="regionContent" class="dropdownContent">
                 </ul>
             </section>
             <section class="select">
@@ -314,11 +346,27 @@ addGenre.addEventListener("click", (event)=>{
         <input id="odeslat" type="submit">
     </form>
     `;
+    
+    fetch("http://localhost:8080/region", {
+        mode: "cors",
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        let regionDropdown = document.getElementById("regionContent");
+        for (let index = 0; index < data.rows.length; index++) {
+            console.log(data.rows[index].name);
+            regionDropdown.innerHTML += `
+            <li>${data.rows[index].name}</li>
+            `
+        }
+    })
+
     let dropdowns = document.getElementsByClassName("dropdownButton");
     let dropdownOptoins = document.getElementsByClassName("dropdownContent");
     let dropIcons = document.getElementsByClassName("fa-caret-down");
     let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (const i in dropdowns) {
+    for (let i = 0; i < dropdowns.length; i++) {
         dropdowns[i].addEventListener("click", (event) =>{
             if ( dropdownOptoins[i].style.display == "block") {
                 dropdownOptoins[i].style.display = "none"
@@ -455,19 +503,27 @@ removeGenre.addEventListener("click", (event)=>{
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th>Fantasy</th>
-                <th>Městská knihovna v Praze - Smíchov</th>
-                <th>Praha</th>
-            </tr>
-            <tr>
-                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th>Sci-fi</th>
-                <th>Městská knihovna v Praze - Smíchov</th>
-                <th>Praha</th>
-            </tr>
         </tbody>
     </table>
     `;
+
+    fetch("http://localhost:8080/region", {
+        mode: "cors",
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        let tableBody = document.getElementsByTagName("tbody")[0];
+        for (let index = 0; index < data.rows.length; index++) {
+            console.log(data.rows[index].name);
+            tableBody.innerHTML += `
+            <tr>
+                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
+                <th>${data.rows[index].name}</th>
+                <th>${data.rows[index].id}</th>
+                <th>${data.rows[index].name}</th>
+            </tr>
+            `
+        }
+    })
 });

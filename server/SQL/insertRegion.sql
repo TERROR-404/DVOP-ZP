@@ -1,0 +1,15 @@
+INSERT INTO public."region" ("name") VALUES
+('Praha'),
+('Středočeský'),
+('Jihočeský'),
+('Plzeňský'),
+('Karlovarský'),
+('Ústecký'),
+('Liberecký'),
+('Královéhradecký'),
+('Pardubický'),
+('Vysočina'),
+('Jihomoravský'),
+('Olomoucký'),
+('Moravskoslezský'),
+('Zlínský');

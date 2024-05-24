@@ -24,7 +24,7 @@ header > #addRemove{
     height: 100%;
 }
 .addOrRemove{
-    width: 30%;
+    width: 40%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -53,6 +53,7 @@ header > #addRemove{
     border-top: solid #8C0000 2px;
     border-right: solid #8C0000 2px;
     color: black;
+    text-align: center;
 }
 .addRemoveButton:first-child{
     border-left: solid #8C0000 2px;

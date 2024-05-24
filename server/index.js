@@ -20,6 +20,33 @@ const client = new Client({
     password: 'gJChPeI4uhZr3XoIbF5A1yWOiORNCKnK',
     database: 'cmerda_bohumil_64d3f_wexcw_db'
 })
-
 client.connect();
-app.listen(8000);
+
+//region
+app.get("/region", async (req, res) => {
+    res.send(await client.query('SELECT * FROM region'));
+});
+
+//library
+app.get("/library", async (req, res) => {
+    res = await client.query('SELECT * FROM library');
+});
+
+//genre
+app.get("/genre", async (req, res) => {
+    res = await client.query('SELECT * FROM genre');
+});
+
+//author
+app.get("/author", async (req, res) => {
+    res = await client.query('SELECT * FROM author');
+});
+
+//book
+app.get("/book", async (req, res) => {
+    res.send(await client.query('SELECT * FROM book'));
+});
+
+app.listen(8080, () => {
+    console.log("Server loaded.");
+});
