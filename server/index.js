@@ -28,6 +28,12 @@ app.get("/region", async (req, res) => {
     res.send(await client.query('SELECT * FROM region;'));
 });
 
+app.get("/region/:id/library", async (req, res) => {
+    let regionId = await client.query('SELECT id FROM public."region" WHERE "name" = $1 LIMIT 1;',[req.params.id]);
+    res.send(await client.query(`SELECT * FROM public."library" WHERE "library"."id_region" = '${regionId.rows[0].id}';`));
+    res.status(200);
+});
+
 //library
 app.get("/library", async (req, res) => {
     res.status(200);
@@ -45,6 +51,12 @@ app.post("/library", async (req, res) => {
 app.get("/genre", async (req, res) => {
     res.status(200);
     res.send(await client.query('SELECT * FROM genre;'));
+});
+
+app.post("/genre", async (req, res) => {
+    await client.query(`INSERT INTO public."genre" ("name") VALUES ('${req.body.name}');`);
+    res.status(201);
+    res.send("Žánr vytvořen");
 });
 
 //author

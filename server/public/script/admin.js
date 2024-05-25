@@ -17,6 +17,37 @@ function addRemoveClick(clickedElement) {
     clickedElement.style.backgroundColor = "#8C0000";
 };
 
+const dropdownFunction =  (()=>{
+    let dropdowns = document.getElementsByClassName("dropdownButton");
+    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
+    let dropIcons = document.getElementsByClassName("fa-caret-down");
+    let dropTitles = document.getElementsByClassName("dropdownTitle");
+    for (let i = 0; i < dropdowns.length; i++) {
+        dropdowns[i].addEventListener("click", (event) =>{
+            if ( dropdownOptoins[i].style.display == "block") {
+                dropdownOptoins[i].style.display = "none"
+                dropdowns[i].style.border = "grey solid 2px"
+                dropIcons[i].style.color = "grey";
+                dropIcons[i].style.transform = "rotate(0deg)";
+            }
+            else{
+                dropdownOptoins[i].style.display = "block";
+                dropdowns[i].style.border = "#8C0000 solid 2px";
+                dropIcons[i].style.color = "#8C0000";
+                dropIcons[i].style.transform = "rotate(180deg)";
+
+                for (const li of dropdownOptoins[i].children) {
+                    li.addEventListener("click", (event) =>{
+                        dropTitles[i].innerText = li.innerText;
+                        dropdownOptoins[i].style.display = "none";
+                        dropIcons[i].style.transform = "rotate(0deg)";
+                    });
+                }
+            }
+        });
+    }
+})
+
 addBook.addEventListener("click", (event)=>{
     addRemoveClick(addBook);
     main.innerHTML = `
@@ -139,34 +170,7 @@ addBook.addEventListener("click", (event)=>{
     for (const iterator of document.getElementsByClassName("select")) {
         iterator.style.width = 45+"%";   
     }
-    let dropdowns = document.getElementsByClassName("dropdownButton");
-    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
-    let dropIcons = document.getElementsByClassName("fa-caret-down");
-    let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (let i = 0; i < dropdowns.length; i++) {
-        dropdowns[i].addEventListener("click", (event) =>{
-            if ( dropdownOptoins[i].style.display == "block") {
-                dropdownOptoins[i].style.display = "none"
-                dropdowns[i].style.border = "grey solid 2px"
-                dropIcons[i].style.color = "grey";
-                dropIcons[i].style.transform = "rotate(0deg)";
-            }
-            else{
-                dropdownOptoins[i].style.display = "block";
-                dropdowns[i].style.border = "#8C0000 solid 2px";
-                dropIcons[i].style.color = "#8C0000";
-                dropIcons[i].style.transform = "rotate(180deg)";
-
-                for (const li of dropdownOptoins[i].children) {
-                    li.addEventListener("click", (event) =>{
-                        dropTitles[i].innerText = li.innerText;
-                        dropdownOptoins[i].style.display = "none";
-                        dropIcons[i].style.transform = "rotate(0deg)";
-                    });
-                }
-            }
-        });
-    }
+    dropdownFunction();
 });
 addAuthor.addEventListener("click", (event)=>{
     addRemoveClick(addAuthor);
@@ -185,11 +189,7 @@ addAuthor.addEventListener("click", (event)=>{
                 <input name="Library" type=button class="dropdownButton">
                 <section class="dropdownTitle"></section>
                 <i class="fa-solid fa-caret-down"></i>
-                <ul class="dropdownContent">
-                    <li>Link 1</li>
-                    <li>Link 2</li>
-                    <li>Link 3</li>
-                    <li>Link 3</li>
+                <ul id="libContent" class="dropdownContent">
                 </ul>
             </section>
         </article>
@@ -201,49 +201,78 @@ addAuthor.addEventListener("click", (event)=>{
     </form>
     `;
 
+    let regionDropdown = document.getElementById("regionContent");
     fetch("http://localhost:8080/region", {
         mode: "cors",
         method: "GET"
     })
     .then(response => response.json())
     .then(data => {
-        let regionDropdown = document.getElementById("regionContent");
         for (let index = 0; index < data.rows.length; index++) {
-            console.log(data.rows[index].name);
             regionDropdown.innerHTML += `
             <li>${data.rows[index].name}</li>
             `
         }
+    }).then(data => {
+        let dropdowns = document.getElementsByClassName("dropdownButton");
+        let dropdownOptoins = document.getElementsByClassName("dropdownContent");
+        let dropIcons = document.getElementsByClassName("fa-caret-down");
+        let dropTitles = document.getElementsByClassName("dropdownTitle");
+        let libContent = document.getElementById("libContent");
+        for (let li of regionDropdown.children) {
+            li.addEventListener("click",()=>{
+                libContent.innerHTML="";
+                dropTitles[1].innerText = "";
+                libContent.style.display = "none";
+                dropIcons[1].style.transform = "rotate(0deg)";
+                fetch(`http://localhost:8080/region/${li.innerText}/library`, {
+                    mode: "cors",
+                    method: "GET"
+                })
+                .then(response => response.json())
+                .then(data => {
+                    for (let index = 0; index < data.rows.length; index++) {
+                        libContent.innerHTML += `
+                        <li>${data.rows[index].name}</li>
+                        `
+                    }
+                    for (const li of libContent.children) {
+                        li.addEventListener("click", (event) =>{
+                            dropTitles[1].innerText = li.innerText;
+                            libContent.style.display = "none";
+                            dropIcons[1].style.transform = "rotate(0deg)";
+                        });
+                    }
+                })
+            });
+        }
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].addEventListener("click", (event) =>{
+                if ( dropdownOptoins[i].style.display == "block") {
+                    dropdownOptoins[i].style.display = "none"
+                    dropdowns[i].style.border = "grey solid 2px"
+                    dropIcons[i].style.color = "grey";
+                    dropIcons[i].style.transform = "rotate(0deg)";
+                }
+                else{
+                    dropdownOptoins[i].style.display = "block";
+                    dropdowns[i].style.border = "#8C0000 solid 2px";
+                    dropIcons[i].style.color = "#8C0000";
+                    dropIcons[i].style.transform = "rotate(180deg)";
+
+                    for (const li of dropdownOptoins[i].children) {
+                        li.addEventListener("click", (event) =>{
+                            dropTitles[i].innerText = li.innerText;
+                            dropdownOptoins[i].style.display = "none";
+                            dropIcons[i].style.transform = "rotate(0deg)";
+                        });
+                    }
+                }
+            });
+        }
     })
 
-    let dropdowns = document.getElementsByClassName("dropdownButton");
-    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
-    let dropIcons = document.getElementsByClassName("fa-caret-down");
-    let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (let i = 0; i < dropdowns.length; i++) {
-        dropdowns[i].addEventListener("click", (event) =>{
-            if ( dropdownOptoins[i].style.display == "block") {
-                dropdownOptoins[i].style.display = "none"
-                dropdowns[i].style.border = "grey solid 2px"
-                dropIcons[i].style.color = "grey";
-                dropIcons[i].style.transform = "rotate(0deg)";
-            }
-            else{
-                dropdownOptoins[i].style.display = "block";
-                dropdowns[i].style.border = "#8C0000 solid 2px";
-                dropIcons[i].style.color = "#8C0000";
-                dropIcons[i].style.transform = "rotate(180deg)";
 
-                for (const li of dropdownOptoins[i].children) {
-                    li.addEventListener("click", (event) =>{
-                        dropTitles[i].innerText = li.innerText;
-                        dropdownOptoins[i].style.display = "none";
-                        dropIcons[i].style.transform = "rotate(0deg)";
-                    });
-                }
-            }
-        });
-    }
 });
 addLibrary.addEventListener("click", (event)=>{
     addRemoveClick(addLibrary);
@@ -284,34 +313,7 @@ addLibrary.addEventListener("click", (event)=>{
         }
     })
 
-    let dropdowns = document.getElementsByClassName("dropdownButton");
-    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
-    let dropIcons = document.getElementsByClassName("fa-caret-down");
-    let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (let i = 0; i < dropdowns.length; i++) {
-        dropdowns[i].addEventListener("click", (event) =>{
-            if ( dropdownOptoins[i].style.display == "block") {
-                dropdownOptoins[i].style.display = "none"
-                dropdowns[i].style.border = "grey solid 2px"
-                dropIcons[i].style.color = "grey";
-                dropIcons[i].style.transform = "rotate(0deg)";
-            }
-            else{
-                dropdownOptoins[i].style.display = "block";
-                dropdowns[i].style.border = "#8C0000 solid 2px";
-                dropIcons[i].style.color = "#8C0000";
-                dropIcons[i].style.transform = "rotate(180deg)";
-
-                for (const li of dropdownOptoins[i].children) {
-                    li.addEventListener("click", (event) =>{
-                        dropTitles[i].innerText = li.innerText;
-                        dropdownOptoins[i].style.display = "none";
-                        dropIcons[i].style.transform = "rotate(0deg)";
-                    });
-                }
-            }
-        });
-    }
+    dropdownFunction();
     const submit = document.getElementById("odeslat");
     submit.addEventListener("click", ()=>{
         let data = {
@@ -333,30 +335,9 @@ addGenre.addEventListener("click", (event)=>{
     addRemoveClick(addGenre);
     main.innerHTML = `
     <form>
-        <article class="selects">
-            <section class="select">
-                <label for="Region" class="dropdownName">Kraj</label>
-                <input name="Region" type=button class="dropdownButton"><i class="fa-solid fa-caret-down"></i>
-                <section class="dropdownTitle"></section>
-                <ul id="regionContent" class="dropdownContent">
-                </ul>
-            </section>
-            <section class="select">
-                <label for="Library" class="dropdownName">Knihovna</label>
-                <input name="Library" type=button class="dropdownButton">
-                <section class="dropdownTitle"></section>
-                <i class="fa-solid fa-caret-down"></i>
-                <ul class="dropdownContent">
-                    <li>Link 1</li>
-                    <li>Link 2</li>
-                    <li>Link 3</li>
-                    <li>Link 3</li>
-                </ul>
-            </section>
-        </article>
         <section class="textboxContainer">
             <label for="Name">Název</label>
-            <input name="Name" type="text">
+            <input id="nameText" name="Name" type="text">
         </section>
         <button id="odeslat" type="submit">Odeslat</button>
     </form>
@@ -377,34 +358,20 @@ addGenre.addEventListener("click", (event)=>{
         }
     })
 
-    let dropdowns = document.getElementsByClassName("dropdownButton");
-    let dropdownOptoins = document.getElementsByClassName("dropdownContent");
-    let dropIcons = document.getElementsByClassName("fa-caret-down");
-    let dropTitles = document.getElementsByClassName("dropdownTitle");
-    for (let i = 0; i < dropdowns.length; i++) {
-        dropdowns[i].addEventListener("click", (event) =>{
-            if ( dropdownOptoins[i].style.display == "block") {
-                dropdownOptoins[i].style.display = "none"
-                dropdowns[i].style.border = "grey solid 2px"
-                dropIcons[i].style.color = "grey";
-                dropIcons[i].style.transform = "rotate(0deg)";
-            }
-            else{
-                dropdownOptoins[i].style.display = "block";
-                dropdowns[i].style.border = "#8C0000 solid 2px";
-                dropIcons[i].style.color = "#8C0000";
-                dropIcons[i].style.transform = "rotate(180deg)";
-
-                for (const li of dropdownOptoins[i].children) {
-                    li.addEventListener("click", (event) =>{
-                        dropTitles[i].innerText = li.innerText;
-                        dropdownOptoins[i].style.display = "none";
-                        dropIcons[i].style.transform = "rotate(0deg)";
-                    });
-                }
-            }
-        });
-    }
+    const submit = document.getElementById("odeslat");
+    submit.addEventListener("click", ()=>{
+        let data = {
+            "name": document.getElementById("nameText").value,
+        };
+        fetch("http://localhost:8080/genre", {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+    });
 });
 removeBook.addEventListener("click", (event)=>{
     addRemoveClick(removeBook);
@@ -519,8 +486,6 @@ removeGenre.addEventListener("click", (event)=>{
             <tr>
                 <th>Smazat</th>
                 <th>Název</th>
-                <th>Knihovna</th>
-                <th>Kraj</th>
             </tr>
         </thead>
         <tbody>
@@ -528,7 +493,7 @@ removeGenre.addEventListener("click", (event)=>{
     </table>
     `;
 
-    fetch("http://localhost:8080/region", {
+    fetch("http://localhost:8080/genre", {
         mode: "cors",
         method: "GET"
     })
@@ -540,8 +505,6 @@ removeGenre.addEventListener("click", (event)=>{
             tableBody.innerHTML += `
             <tr>
                 <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th>${data.rows[index].name}</th>
-                <th>${data.rows[index].id}</th>
                 <th>${data.rows[index].name}</th>
             </tr>
             `
