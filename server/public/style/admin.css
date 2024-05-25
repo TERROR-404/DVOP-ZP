@@ -122,17 +122,6 @@ form{
     justify-content: flex-start;
     row-gap: 40px;
 }
-input[type=submit]{
-    height: 50px;
-    width: 6%;
-    background-color: #8C0000;
-    border-radius: 15px;
-    color: white;
-    font-weight: 600;
-    font-size: 15px;
-    border: none;
-    cursor: pointer;
-}
 input[type=submit]:hover{
     background-color: #ff0000;
 }
@@ -324,7 +313,26 @@ label , .label{
     width: 33%;
 }
 #odeslat{
+    width: 10%;
+    height: 50px;
+    background-color: #8C0000;
+    border-radius: 15px;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+}
+#odeslatRight{
     width: 80%;
+    height: 50px;
+    background-color: #8C0000;
+    border-radius: 15px;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
 }
 #isbnContainer{
     width: 45%;

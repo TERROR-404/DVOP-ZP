@@ -115,7 +115,7 @@ addBook.addEventListener("click", (event)=>{
             </article>
         </article>
         <article id="right">
-            <input id="odeslat" type="submit">
+        <button id="odeslatRight" type="submit">Odeslat</button>
         </article>
     </form>
     `;
@@ -197,7 +197,7 @@ addAuthor.addEventListener("click", (event)=>{
             <label for="Name">Jméno</label>
             <input name="Name" type="text">
         </section>
-        <input id="odeslat" type="submit">
+        <button id="odeslat" type="submit">Odeslat</button>
     </form>
     `;
 
@@ -260,13 +260,13 @@ addLibrary.addEventListener("click", (event)=>{
         </article>
         <section class="textboxContainer">
             <label for="Name">Název</label>
-            <input name="Name" type="text">
+            <input id="nameText" name="Name" type="text">
         </section>
         <section class="textboxContainer">
             <label for="Address">Adresa</label>
-            <input name="Address" type="text">
+            <input id="addressText" name="Address" type="text">
         </section>
-        <input id="odeslat" type="submit">
+        <button id="odeslat" type="submit">Odeslat</button>
     </form>
     `;
 
@@ -278,7 +278,6 @@ addLibrary.addEventListener("click", (event)=>{
     .then(data => {
         let regionDropdown = document.getElementById("regionContent");
         for (let index = 0; index < data.rows.length; index++) {
-            console.log(data.rows[index].name);
             regionDropdown.innerHTML += `
             <li>${data.rows[index].name}</li>
             `
@@ -313,6 +312,22 @@ addLibrary.addEventListener("click", (event)=>{
             }
         });
     }
+    const submit = document.getElementById("odeslat");
+    submit.addEventListener("click", ()=>{
+        let data = {
+            "name": document.getElementById("nameText").value,
+            "address": document.getElementById("addressText").value,
+            "region": document.getElementsByClassName("dropdownTitle")[0].innerText
+        };
+        fetch("http://localhost:8080/library", {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+    });
 });
 addGenre.addEventListener("click", (event)=>{
     addRemoveClick(addGenre);
@@ -343,7 +358,7 @@ addGenre.addEventListener("click", (event)=>{
             <label for="Name">Název</label>
             <input name="Name" type="text">
         </section>
-        <input id="odeslat" type="submit">
+        <button id="odeslat" type="submit">Odeslat</button>
     </form>
     `;
     
@@ -474,21 +489,27 @@ removeLibrary.addEventListener("click", (event)=>{
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th>Městská knihovna v Praze - Smíchov</th>
-                <th>nám. 14. října 83/15, 150 00 Praha 5-Smíchov</th>
-                <th>Praha</th>
-            </tr>
-            <tr>
-                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th>Městská knihovna v Praze - Smíchov</th>
-                <th>nám. 14. října 83/15, 150 00 Praha 5-Smíchov</th>
-                <th>Praha</th>
-            </tr>
         </tbody>
     </table>
     `;
+    fetch("http://localhost:8080/library", {
+        mode: "cors",
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        let tableBody = document.getElementsByTagName("tbody")[0];
+        for (let index = 0; index < data.rows.length; index++) {
+            tableBody.innerHTML += `
+            <tr>
+                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
+                <th>${data.rows[index].library_name}</th>
+                <th>${data.rows[index].adress}</th>
+                <th>${data.rows[index].region_name}</th>
+            </tr>
+            `
+        }
+    })
 });
 removeGenre.addEventListener("click", (event)=>{
     addRemoveClick(removeGenre);

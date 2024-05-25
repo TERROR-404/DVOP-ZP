@@ -24,27 +24,39 @@ client.connect();
 
 //region
 app.get("/region", async (req, res) => {
-    res.send(await client.query('SELECT * FROM region'));
+    res.status(200);
+    res.send(await client.query('SELECT * FROM region;'));
 });
 
 //library
 app.get("/library", async (req, res) => {
-    res = await client.query('SELECT * FROM library');
+    res.status(200);
+    res.send(await client.query('SELECT "library"."name" AS "library_name","adress","region"."name" AS "region_name" FROM "library" JOIN "region" ON "library"."id_region" = "region"."id";'));
+});
+
+app.post("/library", async (req, res) => {
+    let regionId = await client.query('SELECT id FROM public."region" WHERE "name" = $1 LIMIT 1;',[req.body.region]);
+    await client.query(`INSERT INTO public."library" ("name","adress","id_region") VALUES ('${req.body.name}','${req.body.address}','${regionId.rows[0].id}');`);
+    res.status(201);
+    res.send("Knihovna vytvořena");
 });
 
 //genre
 app.get("/genre", async (req, res) => {
-    res = await client.query('SELECT * FROM genre');
+    res.status(200);
+    res.send(await client.query('SELECT * FROM genre;'));
 });
 
 //author
 app.get("/author", async (req, res) => {
-    res = await client.query('SELECT * FROM author');
+    res.status(200);
+    res.send(await client.query('SELECT * FROM author;'));
 });
 
 //book
 app.get("/book", async (req, res) => {
-    res.send(await client.query('SELECT * FROM book'));
+    res.status(200);
+    res.send(await client.query('SELECT * FROM book;'));
 });
 
 app.listen(8080, () => {
