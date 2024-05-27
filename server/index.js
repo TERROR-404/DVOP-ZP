@@ -41,10 +41,36 @@ app.get("/library", async (req, res) => {
 });
 
 app.post("/library", async (req, res) => {
-    let regionId = await client.query('SELECT id FROM public."region" WHERE "name" = $1 LIMIT 1;',[req.body.region]);
-    await client.query(`INSERT INTO public."library" ("name","adress","id_region") VALUES ('${req.body.name}','${req.body.address}','${regionId.rows[0].id}');`);
-    res.status(201);
-    res.send("Knihovna vytvořena");
+    const regionId = await client.query('SELECT id FROM public."region" WHERE "name" = $1 LIMIT 1;',[req.body.region]);
+    const newRegionId = regionId.rows[0].id;
+    const newName = req.body.name;
+    const newAddress = req.body.address;
+    let exist = false;
+    const libraries = await client.query('SELECT * FROM public."library";');
+    for (let index = 0; index < libraries.rows.length; index++) {
+        if ((libraries.rows[index].name == newName) && (libraries.rows[index].adress == newAddress) && (libraries.rows[index].id_region == newRegionId)) {
+            exist = true;
+            break;
+        }
+    }
+    if (!exist) {
+        await client.query(`INSERT INTO public."library" ("name","adress","id_region") VALUES ('${newName}','${newAddress}','${newRegionId}');`);
+        res.status(201);
+        res.send("Knihovna vytvořena");
+    }
+    else{
+        res.status(409);
+        res.send("Knihovna již existuje");
+    }
+});
+
+app.delete("/library/:id", async (req, res) => {
+    const params = req.params.id.split("_");
+    const regionId = await client.query('SELECT id FROM public."region" WHERE "name" = $1 LIMIT 1;',[params[2]]);
+    const newRegionId = regionId.rows[0].id;
+    await client.query(`DELETE FROM public."library" WHERE "id_region" = '${newRegionId}' AND "name" = '${params[0]}' AND "adress" = '${params[1]}';`)
+    res.status(200);
+    res.send("Knihovna smazána");
 });
 
 //genre
@@ -54,9 +80,30 @@ app.get("/genre", async (req, res) => {
 });
 
 app.post("/genre", async (req, res) => {
-    await client.query(`INSERT INTO public."genre" ("name") VALUES ('${req.body.name}');`);
-    res.status(201);
-    res.send("Žánr vytvořen");
+    const newName = req.body.name;
+    let exist = false;
+    const genres = await client.query('SELECT "name" FROM public."genre";');
+    for (let index = 0; index < genres.rows.length; index++) {
+        if (genres.rows[index].name == newName) {
+            exist = true;
+            break;
+        }
+    }
+    if (!exist) {
+        await client.query(`INSERT INTO public."genre" ("name") VALUES ('${newName}');`);
+        res.status(201);
+        res.send("Žánr vytvořen");
+    }
+    else{
+        res.status(409);
+        res.send("Žánr již existuje");
+    }
+});
+
+app.delete("/genre/:id", async (req, res) => {
+    await client.query(`DELETE FROM public."genre" WHERE "name" = '${req.params.id}';`)
+    res.status(200);
+    res.send("Žánr smazán");
 });
 
 //author
@@ -65,11 +112,39 @@ app.get("/author", async (req, res) => {
     res.send(await client.query('SELECT * FROM author;'));
 });
 
+app.post("/author", async (req, res) => {
+    const newName = req.body.name;
+    let exist = false;
+    const authors = await client.query('SELECT "name" FROM public."author";');
+    for (let index = 0; index < authors.rows.length; index++) {
+        if (authors.rows[index].name == newName) {
+            exist = true;
+            break;
+        }
+    }
+    if (!exist) {
+        await client.query(`INSERT INTO public."author" ("name") VALUES ('${newName}');`);
+        res.status(201);
+        res.send("Autor vytvořen");
+    }
+    else{
+        res.status(409);
+        res.send("Autor již existuje");
+    }
+});
+
+app.delete("/author/:id", async (req, res) => {
+    await client.query(`DELETE FROM public."author" WHERE "name" = '${req.params.id}';`)
+    res.status(200);
+    res.send("Autor smazán");
+});
+
 //book
 app.get("/book", async (req, res) => {
     res.status(200);
     res.send(await client.query('SELECT * FROM book;'));
 });
+
 
 app.listen(8080, () => {
     console.log("Server loaded.");

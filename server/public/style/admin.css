@@ -80,31 +80,57 @@ button{
     cursor: pointer;
 }
 table{
+    height: 100%;
     width: 98%;
     border: 3px black solid;
 }
 tr{
     background-color: white;
     width: 100%;
-    line-height: 50px;
-    height: 50px;
+    line-height: 40px;
     font-size: 15px;
     border-bottom: 3px solid black;
+}
+tbody > tr{
+    height: 70px;
 }
 th{
     text-align: center;
     border-right: 3px solid black;
     border-left: 3px solid black;
+    text-wrap: wrap;
 }
 th:first-child{
     width: 100px;
+}
+th:nth-child(3){
+    width: 12%;
+}
+th:nth-child(5){
+    width: 30%;
+}
+th:nth-child(6){
+    width: 7%;
+}
+th:nth-child(7){
+    width: 5%;
+}
+th:nth-child(8){
+    width: 8%;
+}
+tbody > tr > th:first-child{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
 }
 thead > tr{
     font-size: 20px;
     font-weight: 600;
 }
 .remove{
-    height: 55px;
+    height: 100%;
     width: 100%;
     background-color: #8C0000;
     color: white;
@@ -121,9 +147,6 @@ form{
     flex-direction: column;
     justify-content: flex-start;
     row-gap: 40px;
-}
-input[type=submit]:hover{
-    background-color: #ff0000;
 }
 .textboxContainer{
     display: flex;
@@ -163,6 +186,14 @@ label , .label{
     border-radius: 10px;
     background-color: white;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 .dropdownButton:hover{
     border: #8C0000 solid 2px;
@@ -194,9 +225,6 @@ label , .label{
     background-color: darkgray;
 }
 .fa-caret-down{
-    position: absolute;
-    margin-top: 35px;
-    margin-left: 11.5%;;
     color: grey;
     font-size: 20px;
 }
@@ -209,13 +237,6 @@ label , .label{
 ::-webkit-scrollbar-thumb {
     background: grey;
     border-radius: 100px;
-}
-.dropdownTitle{
-    position: absolute;
-    margin-top: 35px;
-    font-weight: 600;
-    font-size: 15px;
-    margin-left: 10px;
 }
 #left{
     display: flex;
@@ -333,6 +354,9 @@ label , .label{
     font-size: 15px;
     border: none;
     cursor: pointer;
+}
+#odeslat:hover , #odeslatRight:hover{
+    background-color: #ff0000;
 }
 #isbnContainer{
     width: 45%;
