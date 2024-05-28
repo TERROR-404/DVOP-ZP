@@ -3,6 +3,12 @@ import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import pg from "pg";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
+let token = jwt.sign({ foo: 'bar' }, 'shhhhh');
+
+const hash = bcrypt.hashSync("myPlaintextPassword", 21);
 
 const app = express();
 
