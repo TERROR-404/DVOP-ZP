@@ -3,12 +3,12 @@ import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import pg from "pg";
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-
-let token = jwt.sign({ foo: 'bar' }, 'shhhhh');
-
-const hash = bcrypt.hashSync("myPlaintextPassword", 21);
+//import jwt from 'jsonwebtoken';
+//import bcrypt from 'bcrypt';
+//
+//let token = jwt.sign({ foo: 'bar' }, 'shhhhh');
+//
+//const hash = bcrypt.hashSync("myPlaintextPassword", 21);
 
 const app = express();
 
@@ -115,7 +115,7 @@ app.delete("/genre/:id", async (req, res) => {
 //author
 app.get("/author", async (req, res) => {
     res.status(200);
-    res.send(await client.query('SELECT * FROM author;'));
+    res.send(await client.query('SELECT * FROM public."author";'));
 });
 
 app.post("/author", async (req, res) => {
@@ -148,9 +148,73 @@ app.delete("/author/:id", async (req, res) => {
 //book
 app.get("/book", async (req, res) => {
     res.status(200);
-    res.send(await client.query('SELECT * FROM book;'));
+    res.send(await client.query(`SELECT "book"."isbn", "book"."name" AS "book_name", "book"."language", "book"."issueNumber", "book"."year", "author"."name" AS "author_name", "library"."name" AS "library_name" FROM public."book"
+    JOIN "book_author"
+    ON "book"."isbn" = "book_author"."isbn_book"
+    JOIN "author"
+    ON "book_author"."id_author" = "author"."id"
+    JOIN "library_book"
+    ON "book"."isbn" = "library_book"."isbn_book"
+    JOIN "library"
+    ON "library_book"."id_library" = "library"."id";`));
 });
 
+app.post("/book", async (req, res) => {
+    const newIsbn = req.body.isbn;
+    const newName = req.body.name;
+    const newLanguage = req.body.language;
+    const newIssueNumber = req.body.issueNumber;
+    const newPages = req.body.pages;
+    const newContent = req.body.description;
+    const newYear = req.body.year;
+    const regionId = await client.query('SELECT id FROM public."region" WHERE "name" = $1 LIMIT 1;',[req.body.region]);
+    const newRegionId = regionId.rows[0].id;
+    const libraryId = await client.query(`SELECT id FROM public."library" WHERE "name" = '${req.body.library}' AND "id_region" = '${newRegionId}' LIMIT 1;`);
+    const newLibraryId = libraryId.rows[0].id;
+    const newGenres = req.body.genres;
+    let newGenreIds = [];
+    for (const genre of newGenres) {
+        let genreId = await client.query(`SELECT id FROM public."genre" WHERE "name" = '${genre}' LIMIT 1;`);
+        newGenreIds.push(genreId.rows[0].id);
+    }
+    const newAuthors = req.body.authors;
+    let newAuthorIds = [];
+    for (const author of newAuthors) {
+        let authorId = await client.query(`SELECT id FROM public."author" WHERE "name" = '${author}' LIMIT 1;`);
+        newAuthorIds.push(authorId.rows[0].id);
+    }
+    
+    let exist = false;
+    const books = await client.query('SELECT "isbn" FROM public."book";');
+    for (let index = 0; index < books.rows.length; index++) {
+        if (books.rows[index].isbn == newIsbn) {
+            exist = true;
+            break;
+        }
+    }
+    if (!exist) {
+        await client.query(`INSERT INTO public."book" ("isbn","name","language","issueNumber","pages","content","year") VALUES ('${newIsbn}','${newName}','${newLanguage}','${newIssueNumber}','${newPages}','${newContent}','${newYear}');`);
+        await client.query(`INSERT INTO public."library_book" ("id_library","isbn_book") VALUES ('${newLibraryId}','${newIsbn}');`);
+        for (const genreId of newGenreIds) {
+            await client.query(`INSERT INTO public."book_genre" ("isbn_book","id_genre") VALUES ('${newIsbn}','${genreId}');`);
+        }
+        for (const authorId of newAuthorIds) {
+            await client.query(`INSERT INTO public."book_author" ("isbn_book","id_author") VALUES ('${newIsbn}','${authorId}');`);
+        }
+        res.status(201);
+        res.send("Kniha vytvořena");
+    }
+    else{
+        res.status(409);
+        res.send("Kniha již existuje");
+    }
+});
+
+app.delete("/book/:id", async (req, res) => {
+    await client.query(`DELETE FROM public."book" WHERE "isbn" = '${req.params.id}';`)
+    res.status(200);
+    res.send("Knihovna smazána");
+});
 
 app.listen(8080, () => {
     console.log("Server loaded.");

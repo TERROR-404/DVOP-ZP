@@ -42,7 +42,7 @@ addBook.addEventListener("click", (event)=>{
                     <article class="selects">
                         <section id="isbnContainer" class="textboxContainer">
                             <label for="Isbn">ISBN</label>
-                            <input id="littleTextbox" name="Isbn" type="text">
+                            <input id="isbnText" class="littleTextbox" name="Isbn" type="text">
                         </section>
                         <section class="select">
                             <label for="Language" class="dropdownName">Jazyk</label>
@@ -54,15 +54,15 @@ addBook.addEventListener("click", (event)=>{
                     <article class="selects">
                         <section id="littleTextContainer" class="textboxContainer">
                             <label for="Year">Rok vydání</label>
-                            <input id="littleTextbox" name="Year" type="text">
+                            <input id="yearText" class="littleTextbox" name="Year" type="text">
                         </section>
                         <section id="littleTextContainer" class="textboxContainer">
                             <label for="IssueNumber">Číslo vydání</label>
-                            <input id="littleTextbox" name="IssueNumber" type="text">
+                            <input id="issueNumberText" class="littleTextbox" name="IssueNumber" type="text">
                         </section>
                         <section id="littleTextContainer" class="textboxContainer">
                             <label for="Pages">Počet stran</label>
-                            <input id="littleTextbox" name="Pages" type="text">
+                            <input id="pagesText" class="littleTextbox" name="Pages" type="text">
                         </section>
                     </article>
                 </article>
@@ -81,7 +81,7 @@ addBook.addEventListener("click", (event)=>{
                         <section class="label">Autoři</section>
                         <section class="adding">
                             <section class="addingLine">
-                                <section class="genre">J.K. Rowlingová</section>
+                                <section class="author">J.K. Rowlingová</section>
                                 <button type=button class="addingButton">-</button>
                             </section>
                             <button type=button class="addingButton" id="addingGenre">+</button>
@@ -92,7 +92,7 @@ addBook.addEventListener("click", (event)=>{
             <article id="mid">
                 <section class="textboxContainer">
                     <label for="Name">Název</label>
-                    <input id="name" name="Name" type="text">
+                    <input class="textBox" id="name" name="Name" type="text">
                 </section>
             </article>
             <article id="down">
@@ -335,6 +335,50 @@ addBook.addEventListener("click", (event)=>{
     for (const iterator of document.getElementsByClassName("select")) {
         iterator.style.width = 45+"%";   
     }
+
+    const submit = document.getElementById("odeslatRight");
+    submit.addEventListener("click", ()=>{
+        let genres = [];
+        for (const genre of document.getElementsByClassName("genre")) {
+            genres.push(genre.innerText);
+            document.getElementsByClassName("adding")[0].removeChild(genre.parentElement);
+        }
+        let authors = [];
+        for (const author of document.getElementsByClassName("author")) {
+            authors.push(author.innerText);
+            document.getElementsByClassName("adding")[1].removeChild(author.parentElement);
+        }
+        let data = {
+            "region": document.getElementsByClassName("dropdownButton")[0].innerHTML.split(" <i")[0],
+            "library": document.getElementsByClassName("dropdownButton")[1].innerHTML.split(" <i")[0],
+            "language": document.getElementsByClassName("dropdownButton")[2].innerHTML.split(" <i")[0],
+            "isbn": document.getElementById("isbnText").value,
+            "name": document.getElementById("name").value,
+            "year": document.getElementById("yearText").value,
+            "issueNumber": document.getElementById("issueNumberText").value,
+            "pages": document.getElementById("pagesText").value,
+            "description": document.getElementById("description").value,
+            "genres": genres,
+            "authors": authors
+        }
+        fetch(url+"/book", {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(()=>{
+            for (const text of document.querySelectorAll(`input[type="text"]`)) {
+                text.value = "";
+            }
+            for (const drop of document.getElementsByClassName("dropdownButton")) {
+                drop.innerHTML = `<i class="fa-solid fa-caret-down"></i>`;
+                drop.style.justifyContent = "flex-end";
+            }
+        })
+    });
 });
 addAuthor.addEventListener("click", (event)=>{
     addRemoveClick(addAuthor);
@@ -342,7 +386,7 @@ addAuthor.addEventListener("click", (event)=>{
     <form>
         <section class="textboxContainer">
             <label for="Name">Jméno</label>
-            <input id="nameText" name="Name" type="text">
+            <input class="textBox" id="nameText" name="Name" type="text">
         </section>
         <button id="odeslat" type="button">Odeslat</button>
     </form>
@@ -380,11 +424,11 @@ addLibrary.addEventListener("click", (event)=>{
         </article>
         <section class="textboxContainer">
             <label for="Name">Název</label>
-            <input id="nameText" name="Name" type="text">
+            <input class="textBox" id="nameText" name="Name" type="text">
         </section>
         <section class="textboxContainer">
             <label for="Address">Adresa</label>
-            <input id="addressText" name="Address" type="text">
+            <input class="textBox" id="addressText" name="Address" type="text">
         </section>
         <button id="odeslat" type="button">Odeslat</button>
     </form>
@@ -440,7 +484,6 @@ addLibrary.addEventListener("click", (event)=>{
             "address": document.getElementById("addressText").value,
             "region": document.getElementsByClassName("dropdownButton")[0].innerHTML.split(" ")[0]
         };
-        console.log(document.getElementsByClassName("dropdownButton")[0].innerHTML.split(" ")[0]);
         fetch(url+"/library", {
             headers: {
                 "Content-Type": "application/json"
@@ -462,7 +505,7 @@ addGenre.addEventListener("click", (event)=>{
     <form>
         <section class="textboxContainer">
             <label for="Name">Název</label>
-            <input id="nameText" name="Name" type="text">
+            <input class="textBox" id="nameText" name="Name" type="text">
         </section>
         <button id="odeslat" type="button">Odeslat</button>
     </form>
@@ -503,33 +546,46 @@ removeBook.addEventListener("click", (event)=>{
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th>Harry potter a kámen mudrců</th>
-                <th>1234-1234-1234-1234</th>
-                <th>Městská knihovna v Praze - Smíchov</th>
-                <th>J.K. Rowlingová, J.R.R. Tolkien, Terry PratchettJ.K. Rowlingová, J.R.R. Tolkien, Terry Pratchett</th>
-                <th>Čeština</th>
-                <th>1</th>
-                <th>1993</th>
-            </tr>
-            <tr>
-                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th>Stopařův průvodce galaxií</th>
-                <th>1234-1234-1234-1234</th>
-                <th>Městská knihovna v Praze - Smíchov</th>
-                <th>Terry Patchet</th>
-                <th>Angličtina</th>
-                <th>3</th>
-                <th>1978</th>
-            </tr>
         </tbody>
     </table>
     `;
-    let rows = document.getElementsByTagName("tr");
-    for (let i = 1; i < rows.length; i++) {
-        rows[i].style.height = "150px";        
-    }
+    fetch(url+"/book", {
+        mode: "cors",
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        let tableBody = document.getElementsByTagName("tbody")[0];
+        for (let index = 0; index < data.rows.length; index++) {
+            tableBody.innerHTML += `
+            <tr>
+                <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
+                <th class="bookNameText">${data.rows[index].book_name.substring(0,20)}</th>
+                <th class="isbnText">${data.rows[index].isbn}</th>
+                <th class="libraryAddressText">${data.rows[index].library_name.substring(0,20)}</th>
+                <th class="authorNameText">${data.rows[index].author_name.substring(0,60)}</th>
+                <th class="languageText">${data.rows[index].language}</th>
+                <th class="issueNumberText">${data.rows[index].issueNumber}</th>
+                <th class="yearText">${data.rows[index].year}</th>
+            </tr>
+            `
+        }
+    })
+    .then(()=>{
+        let removeButtons = document.getElementsByClassName("remove");
+        for (let i = 0; i < removeButtons.length; i++) {
+            removeButtons[i].addEventListener("click",() =>{
+                const path = `${document.getElementsByClassName("isbnText")[i].innerText}`;
+                fetch(url+"/book/"+path , {
+                    mode: "cors",
+                    method: "DELETE",
+                })
+                .then(()=>{
+                    document.getElementsByTagName("tbody")[0].removeChild(document.getElementsByTagName("tbody")[0].children[i]);
+                })
+            })
+        }
+    })
 });
 removeAuthor.addEventListener("click", (event)=>{
     addRemoveClick(removeAuthor);
@@ -554,7 +610,6 @@ removeAuthor.addEventListener("click", (event)=>{
     .then(data => {
         let tableBody = document.getElementsByTagName("tbody")[0];
         for (let index = 0; index < data.rows.length; index++) {
-            console.log(data.rows[index].name);
             tableBody.innerHTML += `
             <tr>
                 <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
