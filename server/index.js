@@ -148,15 +148,32 @@ app.delete("/author/:id", async (req, res) => {
 //book
 app.get("/book", async (req, res) => {
     res.status(200);
-    res.send(await client.query(`SELECT "book"."isbn", "book"."name" AS "book_name", "book"."language", "book"."issueNumber", "book"."year", "author"."name" AS "author_name", "library"."name" AS "library_name" FROM public."book"
-    JOIN "book_author"
-    ON "book"."isbn" = "book_author"."isbn_book"
-    JOIN "author"
-    ON "book_author"."id_author" = "author"."id"
+    const book = await client.query(`SELECT "book"."isbn", "book"."name" AS "book_name", "book"."language", "book"."issueNumber", "book"."year", "book"."pages", "book"."content", "library"."name" AS "library_name", "library"."adress", "region"."name" AS "region_name" FROM public."book"
     JOIN "library_book"
     ON "book"."isbn" = "library_book"."isbn_book"
     JOIN "library"
-    ON "library_book"."id_library" = "library"."id";`));
+    ON "library_book"."id_library" = "library"."id"
+    JOIN "region"
+    ON "library"."id_region" = "region"."id";`);
+
+    const authors = await client.query(`SELECT "book"."isbn", "author"."name" AS "author_name" FROM public."book"
+    JOIN "book_author"
+    ON "book"."isbn" = "book_author"."isbn_book"
+    JOIN "author"
+    ON "book_author"."id_author" = "author"."id";`);
+
+    const genres = await client.query(`SELECT "book"."isbn", "genre"."name" AS "genre_name" FROM public."book"
+    JOIN "book_genre"
+    ON "book"."isbn" = "book_genre"."isbn_book"
+    JOIN "genre"
+    ON "book_genre"."id_genre" = "genre"."id";`);
+
+    let response = {
+        "book": book,
+        "authors": authors,
+        "genres": genres
+    }
+    res.send(response);
 });
 
 app.post("/book", async (req, res) => {

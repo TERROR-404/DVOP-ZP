@@ -272,7 +272,7 @@ addBook.addEventListener("click", (event)=>{
             <li>${data.rows[index].name}</li>
             `
         }
-    }).then(data => {
+    }).then(() => {
         let dropdowns = document.getElementsByClassName("dropdownButton");
         let dropdownOptoins = document.getElementsByClassName("dropdownContent");
         let dropIcons = document.getElementsByClassName("fa-caret-down");
@@ -556,17 +556,28 @@ removeBook.addEventListener("click", (event)=>{
     .then(response => response.json())
     .then(data => {
         let tableBody = document.getElementsByTagName("tbody")[0];
-        for (let index = 0; index < data.rows.length; index++) {
+        for (let index = 0; index < data.book.rows.length; index++) {
+            let authors = "";
+            for (let i = 0; i < data.authors.rows.length; i++) {
+                if (data.authors.rows[i].isbn == data.book.rows[index].isbn) {
+                    if (authors.length != 0) {
+                        authors += `, ${data.authors.rows[i].author_name}`;
+                    }
+                    else{
+                        authors += data.authors.rows[i].author_name;
+                    }
+                }
+            }
             tableBody.innerHTML += `
             <tr>
                 <th><button class="remove"><i class="fa-solid fa-trash-can"></i></button></th>
-                <th class="bookNameText">${data.rows[index].book_name.substring(0,20)}</th>
-                <th class="isbnText">${data.rows[index].isbn}</th>
-                <th class="libraryAddressText">${data.rows[index].library_name.substring(0,20)}</th>
-                <th class="authorNameText">${data.rows[index].author_name.substring(0,60)}</th>
-                <th class="languageText">${data.rows[index].language}</th>
-                <th class="issueNumberText">${data.rows[index].issueNumber}</th>
-                <th class="yearText">${data.rows[index].year}</th>
+                <th class="bookNameText">${data.book.rows[index].book_name.substring(0,20)}</th>
+                <th class="isbnText">${data.book.rows[index].isbn}</th>
+                <th class="libraryAddressText">${data.book.rows[index].library_name.substring(0,20)}</th>
+                <th class="authorNameText">${authors.substring(0,60)}</th>
+                <th class="languageText">${data.book.rows[index].language}</th>
+                <th class="issueNumberText">${data.book.rows[index].issueNumber}</th>
+                <th class="yearText">${data.book.rows[index].year}</th>
             </tr>
             `
         }
