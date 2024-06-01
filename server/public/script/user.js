@@ -312,17 +312,6 @@ function createBooks(books) {
         `
     }
 }
-function sortByBookTitle(){
-    booksData.sort((a, b) => {
-        if (a.bookTitle < b.bookTitle) {
-          return -1;
-        }
-        if (a.bookTitle > b.bookTitle) {
-          return 1;
-        }
-        return 0;
-    });
-}
 
 fetch(url+"/book", {
     mode: "cors",
