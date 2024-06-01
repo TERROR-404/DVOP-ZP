@@ -18,3 +18,4 @@ node .\server\index.js
 ```
 # 3. Otevřete si stránky admina a uživatele
 Nejlepší postup by bylo nainstalovat extension Live Server, pokud ho nemáte, spustit ho ve složce s projektem a následně v něm v prohlížeči otevřít soubory "admin.html" a "user.html" (nachízejí se v .\server\public)
+Pro stránku admina jsou přihlašovací jméno i heslo "admin"
