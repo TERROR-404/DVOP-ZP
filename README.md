@@ -1,7 +1,9 @@
 # 1. Nainstalujte balíčky
 Ve složce server je potřeba nainstalovat tyto balíčky
 ```bash
+npm init
 npm i express
+npm i nodemon
 npm i cors
 npm i helmet
 npm i body-parser
