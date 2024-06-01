@@ -9,7 +9,7 @@ const removeGenre = document.getElementById("removeGenre");
 const main = document.getElementsByTagName("main")[0];
 const url = "http://localhost:8080";
 const token = localStorage.getItem("token");
-if (!token || token == "undefined") {
+if (!token || token == "undefined" || token == undefined) {
     const body = document.querySelector("body");
     body.innerHTML = `<h1>Přihlášení</h1>
     <form id="loginForm">

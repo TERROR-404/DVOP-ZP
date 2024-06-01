@@ -101,7 +101,8 @@ app.post("/authenticate", async (req, res) => {
     }
 });
 
-app.use((req, res, next) => {
+//roybilo se a nepovedlo se na posledn9 chv9li opravit
+/*app.use(async (req, res, next) => {
     
     const token = req.headers["authentication"];
 
@@ -112,8 +113,7 @@ app.use((req, res, next) => {
     }
 
     try {
-        const ttt = jwt.verify(token, "password");
-    
+        const ttt = jwt.verify(token, "wzsdV0Qbzzo0Z9Alp3O8JIwUljzdh8N77gvtz9mNtQ36Mlfsjy");
         req.authentication = ttt.user;
     } catch(e) {
         res.status(498);
@@ -121,7 +121,7 @@ app.use((req, res, next) => {
         return;
     }
     next();
-})
+})*/
 
 //region
 app.get("/region", async (req, res) => {
