@@ -1,4 +1,4 @@
-const url = "http://localhost:8080";
+const url = "http://localhost:8080/user";
 // jazyky generovány pomocí https://chatgpt.com/share/05d6c0bd-8146-4313-8a8e-ad02e93838bd
 const languages = [
     'Abkhaz',
@@ -244,6 +244,7 @@ fetch(url+"/region", {
                         dropdowns[i].style.justifyContent = "space-between";
                         dropdownOptoins[i].style.display = "none";
                         dropIcons[i].style.transform = "rotate(0deg)";
+                        Search();
                     });
                 }
             }
@@ -251,7 +252,77 @@ fetch(url+"/region", {
     }
 })
 
-let booksData = {};
+let booksData = [];
+
+function createBooks(books) {
+    let booksHtml = document.getElementById("books");
+    booksHtml.innerHTML = "";
+    for (const book of books) {
+        booksHtml.innerHTML += `
+        <section class="book">
+            <section class="bookTitle">${book.bookTitle}</section>
+            <section class="bookMain">
+                <section class="bookLeft">
+                    <section class="bookInformation">
+                        <section class="label">Autoři</section>
+                        <section>${book.authors.substring(0,60)}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Jazyk</section>
+                        <section>${book.bookLanguage}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">ISBN</section>
+                        <section>${book.bookIsbn}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Kraj</section>
+                        <section>${book.regionName}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Knihovna</section>
+                        <section>${book.libraryName}</section>
+                        <section class="bookAddress">${book.libraryAddress}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Žánry</section>
+                        <section>${book.genres.substring(0,60)}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Rok vydání</section>
+                        <section>${book.bookYear}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Číslo vydání</section>
+                        <section>${book.bookIssueNumber}</section>
+                    </section>
+                    <section class="bookInformation">
+                        <section class="label">Počet stran</section>
+                        <section>${book.bookPages}</section>
+                    </section>
+                </section>
+                <section class="bookRight">
+                    <section class="label">Děj</section>
+                    <section class="description">
+                        ${book.bookContent}
+                    </section>
+                </section>
+            </section>
+        </section>
+        `
+    }
+}
+function sortByBookTitle(){
+    booksData.sort((a, b) => {
+        if (a.bookTitle < b.bookTitle) {
+          return -1;
+        }
+        if (a.bookTitle > b.bookTitle) {
+          return 1;
+        }
+        return 0;
+    });
+}
 
 fetch(url+"/book", {
     mode: "cors",
@@ -259,8 +330,6 @@ fetch(url+"/book", {
 })
 .then(response => response.json())
 .then(data => {
-    booksData = data;
-    let booksHtml = document.getElementById("books");
     for (let index = 0; index < data.book.rows.length; index++) {
         let authors = "";
         for (let i = 0; i < data.authors.rows.length; i++) {
@@ -277,64 +346,65 @@ fetch(url+"/book", {
         for (let i = 0; i < data.genres.rows.length; i++) {
             if (data.genres.rows[i].isbn == data.book.rows[index].isbn) {
                 if (genres.length != 0) {
-                    genres += `, ${data.genres.rows[i].author_name}`;
+                    genres += `, ${data.genres.rows[i].genre_name}`;
                 }
                 else{
-                    genres += data.genres.rows[i].author_name;
+                    genres += data.genres.rows[i].genre_name;
                 }
             }
         }
-        booksHtml.innerHTML += `
-        <section class="book">
-            <section class="bookTitle">${data.book.rows[index].book_name}</section>
-            <section class="bookMain">
-                <section class="bookLeft">
-                    <section class="bookInformation">
-                        <section class="label">Autoři</section>
-                        <section>${authors.substring(0,60)}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">Jazyk</section>
-                        <section>${data.book.rows[index].language}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">ISBN</section>
-                        <section>${data.book.rows[index].isbn}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">Kraj</section>
-                        <section>${data.book.rows[index].region_name}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">Knihovna</section>
-                        <section>${data.book.rows[index].library_name}</section>
-                        <section class="bookAddress">${data.book.rows[index].adress}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">Žánry</section>
-                        <section>${genres.substring(0,60)}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">Rok vydání</section>
-                        <section>${data.book.rows[index].year}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">Číslo vydání</section>
-                        <section>${data.book.rows[index].issueNumber}</section>
-                    </section>
-                    <section class="bookInformation">
-                        <section class="label">Počet stran</section>
-                        <section>${data.book.rows[index].pages}</section>
-                    </section>
-                </section>
-                <section class="bookRight">
-                    <section class="label">Děj</section>
-                    <section class="description">
-                        ${data.book.rows[index].content}
-                    </section>
-                </section>
-            </section>
-        </section>
-        `
+        const bookTitle = data.book.rows[index].book_name;
+        const bookLanguage = data.book.rows[index].language;
+        const bookIsbn = data.book.rows[index].isbn;
+        const regionName = data.book.rows[index].region_name;
+        const libraryName = data.book.rows[index].library_name;
+        const libraryAddress = data.book.rows[index].adress;
+        const bookYear = data.book.rows[index].year;
+        const bookIssueNumber = data.book.rows[index].issueNumber;
+        const bookPages = data.book.rows[index].pages;
+        const bookContent = data.book.rows[index].content;
+        let book = {
+            "authors":authors,
+            "genres": genres,
+            "bookTitle": bookTitle,
+            "bookLanguage":bookLanguage,
+            "bookIsbn":bookIsbn,
+            "regionName":regionName,
+            "libraryName":libraryName,
+            "libraryAddress":libraryAddress,
+            "bookYear":bookYear,
+            "bookIssueNumber":bookIssueNumber,
+            "bookPages":bookPages,
+            "bookContent":bookContent
+        }
+        booksData.push(book);
     }
+    createBooks(booksData);
 })
+
+function Search() {
+    let searchText = document.getElementById("searchText").value;
+    let selectedRegion = (document.getElementById("selectedRegion").innerHTML.split(`<i`)[0].length == 0) ? undefined : document.getElementById("selectedRegion").innerHTML.split(` <i`)[0];
+    let selectedLibrary = (document.getElementById("selectedLibrary").innerHTML.split("<i")[0].length ==0) ? undefined : document.getElementById("selectedLibrary").innerHTML.split(` <i`)[0];
+    let selectedGenre = (document.getElementById("selectedGenre").innerHTML.split("<i")[0].length ==0) ? undefined : document.getElementById("selectedGenre").innerHTML.split(` <i`)[0];
+    let selectedAuthor = (document.getElementById("selectedAuthor").innerHTML.split("<i")[0].length==0) ? undefined : document.getElementById("selectedAuthor").innerHTML.split(` <i`)[0];
+    let selectedLanguage = (document.getElementById("selectedLanguage").innerHTML.split("<i")[0].length==0) ? undefined : document.getElementById("selectedLanguage").innerHTML.split(` <i`)[0];
+    let searchBooks = [];
+    for (const book of booksData) {
+        if (searchText.length != 0) {
+            if ((book.bookTitle == searchText)&&((selectedAuthor == undefined || book.authors.includes(selectedAuthor))&&(selectedRegion == undefined || book.regionName==selectedRegion)&&(selectedLibrary == undefined || book.libraryName==selectedLibrary)&&(selectedGenre == undefined || book.genres.includes(selectedGenre))&&(selectedLanguage == undefined || book.bookLanguage==selectedLanguage))) {
+                searchBooks.push(book);
+            }
+        }
+        else{
+            if ((selectedAuthor == undefined || book.authors.includes(selectedAuthor))&&(selectedRegion == undefined || book.regionName==selectedRegion)&&(selectedLibrary == undefined || book.libraryName==selectedLibrary)&&(selectedGenre == undefined || book.genres.includes(selectedGenre))&&(selectedLanguage == undefined || book.bookLanguage==selectedLanguage)) {
+                searchBooks.push(book);
+            }
+        }
+    }
+    createBooks(searchBooks);
+}
+let searchButton = document.getElementById("searchButton");
+searchButton.addEventListener("click",()=>{
+    Search();
+});

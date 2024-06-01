@@ -3,12 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import pg from "pg";
-//import jwt from 'jsonwebtoken';
-//import bcrypt from 'bcrypt';
-//
-//let token = jwt.sign({ foo: 'bar' }, 'shhhhh');
-//
-//const hash = bcrypt.hashSync("myPlaintextPassword", 21);
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const app = express();
 
@@ -27,6 +23,105 @@ const client = new Client({
     database: 'cmerda_bohumil_64d3f_wexcw_db'
 })
 client.connect();
+//user
+//region
+app.get("/user/region", async (req, res) => {
+    res.status(200);
+    res.send(await client.query('SELECT * FROM region;'));
+});
+
+app.get("/user/region/:id/library", async (req, res) => {
+    let regionId = await client.query('SELECT id FROM public."region" WHERE "name" = $1 LIMIT 1;',[req.params.id]);
+    res.send(await client.query(`SELECT * FROM public."library" WHERE "library"."id_region" = '${regionId.rows[0].id}';`));
+    res.status(200);
+});
+//genre
+app.get("/user/genre", async (req, res) => {
+    res.status(200);
+    res.send(await client.query('SELECT * FROM genre;'));
+});
+//author
+app.get("/user/author", async (req, res) => {
+    res.status(200);
+    res.send(await client.query('SELECT * FROM public."author";'));
+});
+//book
+app.get("/user/book", async (req, res) => {
+    res.status(200);
+    const book = await client.query(`SELECT "book"."isbn", "book"."name" AS "book_name", "book"."language", "book"."issueNumber", "book"."year", "book"."pages", "book"."content", "library"."name" AS "library_name", "library"."adress", "region"."name" AS "region_name" FROM public."book"
+    JOIN "library_book"
+    ON "book"."isbn" = "library_book"."isbn_book"
+    JOIN "library"
+    ON "library_book"."id_library" = "library"."id"
+    JOIN "region"
+    ON "library"."id_region" = "region"."id";`);
+
+    const authors = await client.query(`SELECT "book"."isbn", "author"."name" AS "author_name" FROM public."book"
+    JOIN "book_author"
+    ON "book"."isbn" = "book_author"."isbn_book"
+    JOIN "author"
+    ON "book_author"."id_author" = "author"."id";`);
+
+    const genres = await client.query(`SELECT "book"."isbn", "genre"."name" AS "genre_name" FROM public."book"
+    JOIN "book_genre"
+    ON "book"."isbn" = "book_genre"."isbn_book"
+    JOIN "genre"
+    ON "book_genre"."id_genre" = "genre"."id";`);
+
+    let response = {
+        "book": book,
+        "authors": authors,
+        "genres": genres
+    }
+    res.send(response);
+});
+
+//admin
+//autentikace
+app.post("/authenticate", async (req, res) => {
+    const userName = req.body.user;
+    const userPassword = req.body.password;
+    const adminData = await client.query('SELECT * FROM public."admin";');
+    for (const admin of adminData.rows) {
+        let adminName = admin.name;
+        let adminPassword = admin.password;
+        if(userName == adminName && bcrypt.compareSync(userPassword,adminPassword)) {
+            const token = jwt.sign({
+                user: adminName
+            }, "$2b$10$iM/wzsdV0Qbzzo0Z9Alp3O8JIwUljzdh8N77gvtz9mNtQ36Mlfsjy",{
+                expiresIn: `1d`
+            });
+    
+            res.send({token: token});
+        } else {
+            res.status(401);
+            res.send({token: undefined});
+        }
+        
+    }
+});
+
+app.use((req, res, next) => {
+    
+    const token = req.headers["authentication"];
+
+    if(!token) {
+        res.status(498);
+        res.send("Chybí token");
+        return;
+    }
+
+    try {
+        const ttt = jwt.verify(token, "password");
+    
+        req.authentication = ttt.user;
+    } catch(e) {
+        res.status(498);
+        res.send("Token je nesprávný");
+        return;
+    }
+    next();
+})
 
 //region
 app.get("/region", async (req, res) => {
