@@ -18,9 +18,9 @@ const { Client } = pg
 const client = new Client({
     host: 'hosting.ssps.cajthaml.eu',
     port: 3337,
-    user: 'cmerda_bohumil_64d3f_wexcw',
-    password: 'gJChPeI4uhZr3XoIbF5A1yWOiORNCKnK',
-    database: 'cmerda_bohumil_64d3f_wexcw_db'
+    user: 'cmerda_bohumil_64d3f_vxnfc',
+    password: 'YPHwwR4hLEAhc5VXwzIre75PHaNarPCu',
+    database: 'cmerda_bohumil_64d3f_vxnfc_db'
 })
 client.connect();
 //user
@@ -79,7 +79,9 @@ app.get("/user/book", async (req, res) => {
 //admin
 //autentikace
 app.post("/authenticate", async (req, res) => {
-    const userName = req.body.user;
+    res.status(401);
+    res.send({token: "$2b$10$iM/wzsdV0Qbzzo0Z9Alp3O8JIwUljzdh8N77gvtz9mNtQ36Mlfsjy"}); //token tu je, jelikož už nemám přístup k databázi a chtěl jsem to vyzkoušet
+    /*const userName = req.body.user;
     const userPassword = req.body.password;
     const adminData = await client.query('SELECT * FROM public."admin";');
     for (const admin of adminData.rows) {
@@ -95,13 +97,13 @@ app.post("/authenticate", async (req, res) => {
             res.send({token: token});
         } else {
             res.status(401);
-            res.send({token: undefined});
+            res.send({token: "undefined"});
         }
         
-    }
+    }*/
 });
 
-//roybilo se a nepovedlo se na posledn9 chv9li opravit
+//rozbilo se a nepovedlo se na poslední chvíli opravit
 /*app.use(async (req, res, next) => {
     
     const token = req.headers["authentication"];
