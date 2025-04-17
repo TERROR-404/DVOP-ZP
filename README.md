@@ -1,3 +1,6 @@
+# Nedoděláno
+Někde v průběhu se stala chyba a aplikace kvůli tomu nefunguje. Bohužel jsem nenašel čas abych tento problém vyřešil a jelikož už ani nemám přístup k využívané databázi, tak na projektu nebudu dále pracovat, protože by stejně nefungoval.
+
 # 1. Nainstalujte balíčky
 Ve složce server je potřeba nainstalovat tyto balíčky
 ```bash
